@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>איך לבנות לעצמכם מוח שני עם AI בפחות מ-15 דקות</title>
+  <style>
+    :root {
+      --page: #f3f0ea;
+      --paper: #fcfbf8;
+      --ink: #171717;
+      --muted: #5f5a53;
+      --line: #d9d1c7;
+      --line-strong: #b7ab9d;
+      --accent: #b14f2b;
+      --accent-soft: #f1e3da;
+      --max-width: 980px;
+      --radius: 22px;
+      --shadow: 0 10px 30px rgba(30, 24, 16, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      font-family: "Segoe UI", "Arial", sans-serif;
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    code {
+      font-family: "Consolas", "Courier New", monospace;
+    }
+
+    .page {
+      width: min(calc(100% - 28px), var(--max-width));
+      margin: 20px auto 48px;
+    }
+
+    .sheet {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero {
+      position: relative;
+      padding: 42px 40px 34px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-mark {
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      width: 96px;
+      max-width: 18vw;
+      opacity: 0.92;
+    }
+
+    .brand-mark img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .kicker {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 6px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 700;
+      background: #fff;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.9fr);
+      gap: 34px;
+      align-items: start;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 4.2vw, 4.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+
+    .subhead {
+      margin: 16px 0 0;
+      max-width: 28ch;
+      font-size: clamp(1.18rem, 1.8vw, 1.5rem);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .source-line {
+      margin: 22px 0 0;
+      font-size: 1.06rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .lead {
+      margin: 28px 0 0;
+      max-width: 58ch;
+      font-size: 1.16rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      background: var(--ink);
+      color: #fff;
+      border: 1px solid var(--ink);
+    }
+
+    .button-secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line-strong);
+    }
+
+    .author-panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+    }
+
+    .portrait {
+      aspect-ratio: 4 / 5;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #f6f2eb;
+      overflow: hidden;
+    }
+
+    .portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .author-panel h2 {
+      margin: 16px 0 8px;
+      font-size: 1.45rem;
+      line-height: 1.35;
+    }
+
+    .author-panel p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .author-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .author-tags span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .content {
+      padding: 0 40px 40px;
+    }
+
+    .intro {
+      padding: 26px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .intro p {
+      margin: 0;
+      font-size: 1.08rem;
+      color: var(--muted);
+    }
+
+    .intro .button {
+      margin-top: 18px;
+    }
+
+    .chapter {
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .chapter:last-of-type {
+      border-bottom: 0;
+    }
+
+    .chapter-label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 0.92rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .chapter h3 {
+      margin: 0 0 16px;
+      font-size: clamp(1.7rem, 2.5vw, 2.25rem);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    .chapter p {
+      margin: 0;
+      font-size: 1.12rem;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .box {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .box h4 {
+      margin: 0 0 10px;
+      font-size: 1.22rem;
+    }
+
+    .box p {
+      margin: 0;
+      font-size: 1.04rem;
+      color: var(--muted);
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 22px;
+      align-items: center;
+    }
+
+    .flow-item {
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-size: 1.28rem;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .step {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .list {
+      margin-top: 18px;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .list li {
+      padding: 14px 16px;
+      border-right: 3px solid var(--accent);
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font-size: 1.04rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .timeline {
+      margin-top: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .timeline-item span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.96rem;
+      font-weight: 800;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      font-size: 1.04rem;
+    }
+
+    .code-block {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+      overflow-x: auto;
+      font-size: 0.98rem;
+      line-height: 1.85;
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+    }
+
+    .callout {
+      margin: 34px 0;
+      padding: 24px;
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid var(--line-strong);
+    }
+
+    .callout h3 {
+      margin: 0 0 10px;
+      font-size: 1.7rem;
+      line-height: 1.3;
+    }
+
+    .callout p {
+      margin: 0;
+      font-size: 1.08rem;
+      color: var(--muted);
+    }
+
+    .callout .button {
+      margin-top: 18px;
+    }
+
+    .summary {
+      padding: 34px 0 6px;
+    }
+
+    .summary h3 {
+      margin: 0 0 16px;
+      font-size: clamp(1.9rem, 2.8vw, 2.6rem);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .summary p {
+      margin: 0 0 14px;
+      font-size: 1.12rem;
+    }
+
+    .copyright {
+      margin-top: 30px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .compare,
+      .process,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page {
+        width: min(calc(100% - 16px), var(--max-width));
+        margin: 8px auto 24px;
+      }
+
+      .hero,
+      .content {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+
+      .hero {
+        padding-top: 26px;
+        padding-bottom: 26px;
+      }
+
+      .brand-mark {
+        position: static;
+        width: 82px;
+        margin-bottom: 18px;
+      }
+
+      .sheet {
+        border-radius: 22px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 2.3rem;
+      }
+
+      .chapter p,
+      .summary p,
+      .lead,
+      .source-line {
+        font-size: 1.04rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="sheet">
+      <header class="hero">
+        <a class="brand-mark" href="#guide" aria-label="ScaleUp">
+          <img src="./לוגו.jpeg" alt="ScaleUp logo">
+        </a>
+        <div class="kicker">מדריך פרקטי למי שרוצה לבנות מערכת ידע אישית עם AI</div>
+        <div class="hero-grid">
+          <div>
+            <h1>איך לבנות לעצמכם "מוח שני" עם AI בפחות מ-15 דקות</h1>
+            <p class="subhead">מהרעיון של Andrej Karpathy עד למבנה תיקיות פשוט שהופך ל-wiki אישי, חכם ומצטבר.</p>
+            <p class="source-line">
+              מאת מאי רייזמן, ScaleUp. בהשראת הגישה של Andrej Karpathy לבניית מאגר ידע אישי מבוסס AI.
+            </p>
+            <p class="lead">
+              במקום שהידע שלכם יהיה מפוזר בין וואטסאפ, דרייב, לינקים שמורים, צילומי מסך והערות,
+              אפשר לרכז הכול במקום אחד ולתת ל-AI להפוך אותו למערכת ידע שעוזרת לחשוב, לכתוב,
+              לחבר רעיונות ולהשתפר עם הזמן.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0ppggGsyTUlEsBGauiMAHEbJ03BSY3Aseb-9B-J_g85v7uUPdTpGXkxPMwEuAtPF0JqB00ywre" target="_blank" rel="noreferrer">לקביעת שיחת היכרות בחינם</a>
+              <a class="button button-secondary" href="#guide">לקריאת המדריך</a>
+            </div>
+          </div>
+
+          <aside class="author-panel">
+            <div class="portrait">
+              <img src="./אני.jpeg" alt="מאי רייזמן">
+            </div>
+            <h2>מאי רייזמן</h2>
+            <p>
+              אני חי את החיבור בין אסטרטגיה, תהליכים ובינה מלאכותית.
+            </p>
+            <p>
+              המטרה שלי היא להראות איך אפשר להשתמש ב-AI לא רק כדי לייצר תשובות,
+              אלא כדי לבנות מערכות חשיבה, עבודה וידע שעובדות בשבילנו.
+            </p>
+            <p>
+              המדריך הזה נועד לקחת רעיון שנשמע מורכב ולהפוך אותו למשהו שאפשר להקים מהר,
+              בלי תוכנות כבדות ובלי להסתבך עם תשתיות.
+            </p>
+            <div class="author-tags">
+              <span>ScaleUp</span>
+              <span>AI לעבודה חכמה</span>
+              <span>Knowledge Systems</span>
+            </div>
+          </aside>
+        </div>
+      </header>
+
+      <div class="content" id="guide">
+        <section class="intro">
+          <p>
+            בפחות מ-15 דקות תלמדו איך לבנות מבנה תיקיות מדויק, לאסוף מידע בקלות, לכתוב קובץ חוקים אחד
+            שמסדר את הכול, לגרום ל-AI לבנות לכם wiki אישי, ליצור לולאת שיפור מצטברת ולבצע Health Check
+            שמונע טעויות לפני שהן מצטברות.
+          </p>
+          <a class="button button-secondary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0ppggGsyTUlEsBGauiMAHEbJ03BSY3Aseb-9B-J_g85v7uUPdTpGXkxPMwEuAtPF0JqB00ywre" target="_blank" rel="noreferrer">רוצה לבנות מערכת כזאת אצלך?</a>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">פתיחה</span>
+          <h3>הרעיון פשוט יותר ממה שנדמה</h3>
+          <p>
+            במקום שהידע שלכם יהיה מפוזר בין וואטסאפ, דרייב, לינקים שמורים, צילומי מסך והערות,
+            מרכזים הכול בתיקייה אחת. משם נותנים ל-AI להפוך את החומרים ל-wiki אישי: סיכומים, חיבורים בין רעיונות,
+            מאמרים ותובנות שנהיים חכמים יותר בכל פעם שמשתמשים בהם. בלי תוכנה מיוחדת, בלי דאטהבייס ובלי תוספים.
+            רק תיקיות וקבצי טקסט.
+          </p>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 1</span>
+          <h3>פותחים 3 תיקיות וזה כל הבסיס</h3>
+          <p>
+            יוצרים תיקייה ראשית בשם <code>my-knowledge-base/</code>, ובתוכה שלוש תיקיות בלבד.
+            זאת כל התשתית שצריך כדי להתחיל.
+          </p>
+          <div class="code-block"><code>my-knowledge-base/
+  raw/
+  wiki/
+  outputs/</code></div>
+          <div class="compare">
+            <div class="box">
+              <h4><code>raw/</code></h4>
+              <p>כל חומרי הגלם: מאמרים, הערות, צילומי מסך, סיכומי פגישות, מסמכים ולינקים.</p>
+            </div>
+            <div class="box">
+              <h4><code>wiki/</code> + <code>outputs/</code></h4>
+              <p><code>wiki/</code> הוא המקום שבו ה-AI יכתוב את הידע המסודר, ו-<code>outputs/</code> ישמור תשובות, מחקרים, דוחות ותוצרים.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 2</span>
+          <h3>ממלאים את raw בלי לנסות להיות מסודרים מדי</h3>
+          <p>
+            זה השלב שבו רוב האנשים נתקעים. הם יוצרים את התיקיות ואז בוהים בתיקיית <code>raw/</code> הריקה.
+            התשובה פשוטה: הכול נכנס פנימה. אל תארגנו, אל תשנו שמות, אל תנקו. זה התפקיד של ה-AI.
+          </p>
+          <ul class="list">
+            <li>מאמרים ומחקרים</li>
+            <li>סיכומי שיחות ופגישות</li>
+            <li>רעיונות והערות מהירות</li>
+            <li>Bookmarks, screenshots ומסמכים קיימים</li>
+          </ul>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 3</span>
+          <h3>אוספים מידע אוטומטית אם רוצים להאיץ את הקצב</h3>
+          <p>
+            החלק הזה אופציונלי, אבל חזק מאוד. אם אתם רוצים למשוך תוכן מהאינטרנט ישירות אל <code>raw/</code>,
+            אפשר להשתמש ב-<code>agent-browser</code>.
+          </p>
+          <div class="process">
+            <div class="step">
+              <strong>התקנה</strong>
+              <p><code>npm install -g agent-browser</code><br><code>agent-browser install</code></p>
+            </div>
+            <div class="step">
+              <strong>שימוש</strong>
+              <p><code>agent-browser open https://example.com</code><br><code>agent-browser get text "article"</code></p>
+            </div>
+          </div>
+          <div class="flow" aria-label="זרימת איסוף ידע">
+            <div class="flow-item">עמוד תוכן</div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-item">agent-browser</div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-item">raw/</div>
+            <div class="flow-arrow">←</div>
+            <div class="flow-item">wiki אישי</div>
+          </div>
+        </section>
+
+        <section class="callout">
+          <h3>העיקרון הכי חשוב כאן: לא בונים מערכת מסודרת מראש, בונים מקום שאפשר להזרים אליו ידע.</h3>
+          <p>
+            ברגע שהחומרים מתחילים להצטבר, ה-AI כבר יכול לעשות את החלק הקשה באמת:
+            לארגן, לקשר, לסכם ולזהות מה חסר.
+          </p>
+          <a class="button button-primary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0ppggGsyTUlEsBGauiMAHEbJ03BSY3Aseb-9B-J_g85v7uUPdTpGXkxPMwEuAtPF0JqB00ywre" target="_blank" rel="noreferrer">לקביעת שיחת היכרות בחינם</a>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 4</span>
+          <h3>יוצרים קובץ חוקים אחד שמנהל את הכול</h3>
+          <p>
+            צרו קובץ בשם <code>CLAUDE.md</code>. זה קובץ ההנחיות של המערכת, והוא מגדיר ל-AI איך
+            להתייחס לתיקיות, איך לבנות את ה-wiki ואיך לשמור על סדר פנימי לאורך זמן.
+          </p>
+          <div class="code-block"><code># Knowledge Base Schema
+
+## What This Is
+A personal knowledge base about [YOUR TOPIC]
+
+## How It's Organized
+- raw contains source material
+- wiki contains organized knowledge
+- outputs contains generated insights
+
+## Wiki Rules
+- Every topic gets its own .md file
+- Every file starts with a summary
+- Maintain INDEX.md
+- Link related topics
+- Update when new raw sources are added</code></div>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 5</span>
+          <h3>נותנים ל-AI לבנות את ה-wiki האישי</h3>
+          <p>
+            אחרי שיש תיקיות וחוקים, אפשר לתת ל-AI לעבוד. המטרה שלו היא לקרוא את כל מה שיש ב-<code>raw/</code>,
+            לייצר מבנה ברור ב-<code>wiki/</code>, ולחבר בין נושאים בצורה שהופכת אוסף קבצים למערכת ידע.
+          </p>
+          <div class="code-block"><code>Read everything in raw/.
+Then compile a wiki in wiki/ following the rules in CLAUDE.md.
+Create an INDEX.md first.
+Create one .md file per major topic.
+Link related topics.
+Summarize every source.</code></div>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 6</span>
+          <h3>שואלים שאלות ושומרים תשובות כדי ליצור לולאת שיפור</h3>
+          <p>
+            ברגע שיש לכם 10 קבצים ומעלה, מתחיל הערך האמיתי. עכשיו הידע כבר לא רק שמור,
+            אלא הופך למשהו שאפשר לחשוב איתו. כל שאלה חדשה משפרת את התשובה הבאה.
+          </p>
+          <div class="grid-3">
+            <div class="box">
+              <h4>פערי ידע</h4>
+              <p>מהם הפערים הכי גדולים בידע שלי?</p>
+            </div>
+            <div class="box">
+              <h4>סתירות</h4>
+              <p>איפה יש סתירות בין מקורות, הערות או רעיונות?</p>
+            </div>
+            <div class="box">
+              <h4>חיבורים</h4>
+              <p>אילו נושאים קשורים זה לזה, גם אם לא ראיתי את זה קודם?</p>
+            </div>
+          </div>
+          <p style="margin-top:18px;">
+            את התשובות שומרים ב-<code>outputs/</code>. כאן נבנית לולאה מצטברת של חשיבה, תיעוד ושיפור.
+          </p>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 7</span>
+          <h3>מבצעים Health Check חודשי כדי למנוע טעויות מצטברות</h3>
+          <p>
+            פעם בחודש מריצים בדיקה אחת מסודרת על כל ה-wiki. זה קריטי, כי גם מערכת טובה יכולה לצבור
+            חורים, סתירות או טענות לא מבוססות אם לא בודקים אותה.
+          </p>
+          <div class="timeline">
+            <div class="timeline-item">
+              <span>1</span>
+              <p>Review the entire wiki directory.</p>
+            </div>
+            <div class="timeline-item">
+              <span>2</span>
+              <p>Flag contradictions.</p>
+            </div>
+            <div class="timeline-item">
+              <span>3</span>
+              <p>Find unexplained topics and unsupported claims.</p>
+            </div>
+            <div class="timeline-item">
+              <span>4</span>
+              <p>Suggest 3 missing articles.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter">
+          <span class="chapter-label">שלב 8</span>
+          <h3>לא חייבים Obsidian. מה שחשוב הוא המבנה, ה-schema וה-consistency</h3>
+          <p>
+            אפשר לעבוד עם Claude Code, עם Codex, או עם כל סביבת עבודה שמסוגלת לקרוא קבצים,
+            לעדכן אותם ולשמור לוגיקה עקבית. ה-AI לא באמת משנה איפה הקבצים יושבים. מה שחשוב הוא
+            שמבנה התיקיות ברור, שיש קובץ חוקים מסודר, ושהמערכת נשמרת עקבית לאורך זמן.
+          </p>
+          <ul class="list">
+            <li>מבנה תיקיות ברור עדיף על עוד אפליקציה נוצצת.</li>
+            <li>Schema טוב חוסך בלגן בהמשך.</li>
+            <li>Consistency הוא מה שהופך אוסף קבצים למערכת ידע אמיתית.</li>
+          </ul>
+        </section>
+
+        <section class="summary">
+          <h3>אל תחפשו את הכלי המושלם. פשוט תתחילו לבנות.</h3>
+          <p>
+            אם תאספו את הידע שלכם למקום אחד, תגדירו חוקים פשוטים ותיתנו ל-AI לעבוד על בסיס עקבי,
+            תקבלו הרבה יותר ממקום לשמור בו חומרים. תקבלו מערכת שעוזרת לכם לחשוב, לחקור, לחבר נקודות
+            ולשפר את הידע שלכם עם הזמן.
+          </p>
+          <p>
+            וזה בדיוק הרעיון של "מוח שני": לא עוד תיקייה עם קבצים, אלא שכבת חשיבה נוספת שעובדת בשבילכם.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ0ppggGsyTUlEsBGauiMAHEbJ03BSY3Aseb-9B-J_g85v7uUPdTpGXkxPMwEuAtPF0JqB00ywre" target="_blank" rel="noreferrer">לקביעת שיחת היכרות בחינם</a>
+            <a class="button button-secondary" href="#guide">לחזרה לתחילת המדריך</a>
+          </div>
+          <div class="copyright">
+            ScaleUp Business Consulting · מדריך בעברית לבניית מערכת ידע אישית עם AI
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
